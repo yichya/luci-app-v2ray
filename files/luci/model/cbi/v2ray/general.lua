@@ -14,11 +14,6 @@ local function is_running(name)
     return luci.sys.call("pidof %s >/dev/null" % { name }) == 0
 end
 
--- 透明代理状态
-local function has_rules()
-    return luci.sys.call("iptables-save | grep V2RAY | grep REDIRECT >/dev/null") == 0
-end
-
 -- 获取状态
 local function get_status(b)
     return b and translate("RUNNING") or translate("NOT RUNNING")
@@ -45,10 +40,6 @@ if has_v2ray then
 
     o = s:option(DummyValue, "_v2ray_status", translate("V2ray Service"))
     o.value = "<span id=\"_v2ray_status\">%s</span>" % { get_status(is_running('v2ray')) }
-    o.rawhtml = true
-
-    o = s:option(DummyValue, "_rules_status", translate("Transparent Proxy"))
-    o.value = "<span id=\"_rules_status\">%s</span>" % { get_status(has_rules()) }
     o.rawhtml = true
 end
 
@@ -91,6 +82,26 @@ if has_v2ray then
     o.datatype = "port"
     o.default = 1080
     o.rmempty = false
+    
+    o = s:option(Flag, "socks_enable", translate("Enable Socks Proxy"))
+    o.rmempty = false
+
+    -- 本地端口
+    o = s:option(Value, "socks_port", translate("Socks5 Proxy Port"))
+    o.depends("socks_enable", true)
+    o.datatype = "port"
+    o.default = 1086
+    o.rmempty = false
+
+    o = s:option(Flag, "dns_enable", translate("Enable DNS Tunnel"))
+    o.rmempty = false
+
+    -- 本地端口
+    o = s:option(Value, "dns_port", translate("DNS Tunnel Port"))
+    o.depends("dns_enable", true)
+    o.datatype = "port"
+    o.default = 5300
+    o.rmempty = false
 
     -- 标记
     o = s:option(Value, "mark", translate("MARK"), translate("Avoid proxy loopback problems with local (gateway) traffic"))
@@ -99,7 +110,7 @@ if has_v2ray then
     o.rmempty = false
 
     -- 绕过大陆地址
-    o = s:option(Flag, "bypass_china_addr", translate("Bypass Chinese address"))
+    o = s:option(Flag, "bypass_china_addr", translate("Bypass Chinese Domain"))
     o.rmempty = false
 
     -- 绕过大陆IP
