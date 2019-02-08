@@ -17,7 +17,7 @@ define Package/$(PKG_NAME)
 	CATEGORY:=LuCI
 	SUBMENU:=3. Applications
 	TITLE:=LuCI Support for v2ray-core
-	DEPENDS:=+coreutils-nohup +iptables +ca-bundle +ca-certificates
+	DEPENDS:=+iptables +ca-bundle
 endef
 
 define Package/$(PKG_NAME)/description
