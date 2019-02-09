@@ -8,7 +8,13 @@ local server_section = proxy.main_server --"cfg044a8f"
 local server = ucursor:get_all("v2ray", server_section)
 
 local function gen_routing()
-    local r = {}
+    local r = {
+        {
+            type = "field",
+            outboundTag = "direct",
+            ip = {"geoip:private"}
+        }
+    }
     if proxy.bypass_china_addr == "1" then
         table.insert(
             r,
@@ -29,14 +35,13 @@ local function gen_routing()
             }
         )
     end
-    table.insert(
-        r,
-        {
+    if proxy.dns_enable == "1" then
+        table.insert(r, {
             type = "field",
-            outboundTag = "direct",
-            ip = {"geoip:private"}
-        }
-    )
+            inboundTag = {"dns_inbound", "dns_inbound_tag"},
+            outboundTag = "dns_outbound"
+        })
+    end
     return r
 end
 
@@ -60,19 +65,14 @@ local function dokodemo_conf()
     }
 end 
 
-local function socks_conf() 
+local function dns_conf() 
     return {
-        port = proxy.local_port,
+        port = proxy.ldns_port,
         protocol = "dokodemo-door",
         settings = {
             network = "tcp,udp",
-            followRedirect = true
         },
-        streamSettings = {
-            sockopt = {
-                tproxy = "redirect"
-            },
-        },
+        tag = "dns_inbound",
         sniffing = {
             enabled = true,
             destOverride = {"http", "tls"}
@@ -80,9 +80,9 @@ local function socks_conf()
     }
 end
 
-local function dns_conf()
+local function socks_conf()
     return {
-        port = proxy.dns_port,
+        port = proxy.socks_port,
         protocol = "socks",
         settings = {
             udp = true
@@ -98,10 +98,10 @@ local function inbounds()
     t = {
         dokodemo_conf()
     }
-    if proxy.socks_enable then
+    if proxy.socks_enable == "1" then
         table.insert(t, socks_conf())
     end
-    if proxy.dns_enable then 
+    if proxy.dns_enable == "1" then 
         table.insert(t, dns_conf()) 
     end
     return t
@@ -223,6 +223,20 @@ local v2ray = {
             domainStrategy = "IPIfNonMatch",
             rules = gen_routing()
         }
+    },
+    dns = {
+        servers = {
+            {
+                address = "114.114.114.114",
+                port = "53",
+                domains = {
+                    "geosite:cn"
+                }
+            },
+            "localhost"
+        },
+        clientIp = "202.99.166.4",
+        tag = "dns_inbound_tag"
     }
 }
 print(json.stringify(v2ray))
