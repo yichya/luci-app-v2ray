@@ -82,23 +82,18 @@ if has_v2ray then
     o.datatype = "port"
     o.default = 1080
     o.rmempty = false
-    
-    o = s:option(Flag, "socks_enable", translate("Enable Socks Proxy"))
+
+    o = s:option(Value, "http_port", translate("Http Proxy Port"))
+    o.datatype = "port"
+    o.default = 1087
     o.rmempty = false
 
-    -- 本地端口
     o = s:option(Value, "socks_port", translate("Socks5 Proxy Port"))
-    o.depends("socks_enable", true)
     o.datatype = "port"
     o.default = 1086
     o.rmempty = false
 
-    o = s:option(Flag, "dns_enable", translate("Enable DNS Tunnel"))
-    o.rmempty = false
-
-    -- 本地端口
     o = s:option(Value, "dns_port", translate("DNS Tunnel Port"))
-    o.depends("dns_enable", true)
     o.datatype = "port"
     o.default = 5300
     o.rmempty = false
@@ -107,14 +102,6 @@ if has_v2ray then
     o = s:option(Value, "mark", translate("MARK"), translate("Avoid proxy loopback problems with local (gateway) traffic"))
     o.datatype = "uinteger"
     o.default = 255
-    o.rmempty = false
-
-    -- 绕过大陆地址
-    o = s:option(Flag, "bypass_china_addr", translate("Bypass Chinese Domain"))
-    o.rmempty = false
-
-    -- 绕过大陆IP
-    o = s:option(Flag, "bypass_china_ip", translate("Bypass Chinese IP"))
     o.rmempty = false
 end
 
