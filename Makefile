@@ -68,6 +68,8 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./files/root/etc/uci-defaults/luci-v2ray $(1)/etc/uci-defaults/luci-v2ray
 	$(INSTALL_DIR) $(1)/etc/v2ray
 	$(INSTALL_BIN) ./files/root/etc/v2ray/* $(1)/etc/v2ray/
+	$(INSTALL_DIR) $(1)/usr/share/dnsmasq_white_list
+	$(INSTALL_DATA) ./files/usr/share/dnsmasq_white_list/*.conf $(1)/usr/share/dnsmasq_white_list
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

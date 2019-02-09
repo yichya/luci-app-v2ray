@@ -138,7 +138,6 @@ local function dns_conf()
     return {
         port = proxy.dns_port,
         protocol = "dokodemo-door",
-        tag = "dns_inbound",
         settings = {
             address = "208.67.220.220",
             port = 443,
@@ -177,32 +176,12 @@ local v2ray = {
     -- 传出连接
     outbounds = {
         vmess_outbound(),
-        direct_outbound(),
-        {
-            protocol = "dns",
-            tag = "dns_outbound"
-        }
+        direct_outbound()
     },
     -- 路由
     routing = {
         domainStrategy = "AsIs",
         rules = {
-            {
-                type = "field",
-                inboundTag = {"dns_inbound"},
-                outboundTag = "dns_outbound"
-            },
-            {
-                type = "field",
-                inboundTag = {"dns_inbound_tag"},
-                ip = {"geoip:cn"},
-                outboundTag = "direct"
-            },
-            {
-                type = "field",
-                inboundTag = {"dns_inbound_tag"},
-                outboundTag = "vmess"
-            },
             {
                 type = "field",
                 inboundTag = {"redirect_inbound", "socks_inbound"},
@@ -222,18 +201,6 @@ local v2ray = {
             }
         }
     },
-    dns = {
-        servers = {
-            {
-                domains = {"geosite:cn"},
-                address = "114.114.114.114",
-                port = 53
-            },
-            "208.67.220.220"
-        },
-        clientIp = "202.99.166.4",
-        tag = "dns_inbound_tag"
-    }
 }
 
 print(json.stringify(v2ray))

@@ -98,6 +98,9 @@ if has_v2ray then
     o.default = 5300
     o.rmempty = false
 
+    o = s:option(Flag, "dns_use_geosite", translate("Use V2ray GeoSite:CN instead of dnsmasq whitelist"))
+    o.rmempty = false    
+
     -- 标记
     o = s:option(Value, "mark", translate("MARK"), translate("Avoid proxy loopback problems with local (gateway) traffic"))
     o.datatype = "uinteger"
