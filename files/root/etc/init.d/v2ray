@@ -52,6 +52,7 @@ start_v2ray() {
     procd_append_param command $(gen_config_file ${main_server})
     procd_set_param stdout 1
     procd_set_param stderr 1
+    procd_set_param file /etc/config/v2ray
     procd_close_instance
 }
 

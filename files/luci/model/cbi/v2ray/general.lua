@@ -68,7 +68,7 @@ if has_v2ray then
 
     -- 主服务器
     o = s:option(Value, "main_server", translate("Main Server"))
-    o:value("nil", translate("Disable"))
+    o:value("nil", translate("Disabled"))
     uci:foreach(v2ray, "servers", function(s)
         if s.server and s.server_port then
             o:value(s[".name"], s.alias or "%s:%s" % { s.server, s.server_port })
@@ -78,15 +78,16 @@ if has_v2ray then
     o.rmempty = false
 
     -- 本地端口
-    o = s:option(Value, "local_port", translate("Local Port"))
+    o = s:option(Value, "local_port", translate("Redirect Port"))
     o.datatype = "port"
     o.default = 1080
     o.rmempty = false
 
-    o = s:option(Value, "http_port", translate("Http Proxy Port"))
-    o.datatype = "port"
-    o.default = 1087
-    o.rmempty = false
+    -- todo
+    -- o = s:option(Value, "http_port", translate("Http Proxy Port"))
+    -- o.datatype = "port"
+    -- o.default = 1087
+    -- o.rmempty = false
 
     o = s:option(Value, "socks_port", translate("Socks5 Proxy Port"))
     o.datatype = "port"
@@ -98,10 +99,10 @@ if has_v2ray then
     o.default = 5300
     o.rmempty = false
 
-    o = s:option(Flag, "dns_use_geosite", translate("Use V2ray GeoSite:CN instead of dnsmasq whitelist"))
-    o.rmempty = false    
+    -- Todo
+    -- o = s:option(Flag, "dns_use_geosite", translate("Use V2ray GeoSite:CN instead of dnsmasq whitelist"))
+    -- o.rmempty = false    
 
-    -- 标记
     o = s:option(Value, "mark", translate("MARK"), translate("Avoid proxy loopback problems with local (gateway) traffic"))
     o.datatype = "uinteger"
     o.default = 255
