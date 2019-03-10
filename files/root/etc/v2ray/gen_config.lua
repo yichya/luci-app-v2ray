@@ -153,10 +153,6 @@ local function socks_conf()
         tag = "socks_inbound",
         settings = {
             udp = true
-        },
-        sniffing = {
-            enabled = true,
-            destOverride = {"http", "tls"}
         }
     }
 end

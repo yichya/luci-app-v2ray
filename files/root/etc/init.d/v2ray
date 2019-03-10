@@ -68,3 +68,8 @@ stop_service() {
     rm /tmp/dnsmasq.d/v2ray.conf
     /etc/init.d/dnsmasq restart
 }
+
+service_triggers()
+{
+    procd_add_reload_trigger "/etc/config/v2ray"
+}
