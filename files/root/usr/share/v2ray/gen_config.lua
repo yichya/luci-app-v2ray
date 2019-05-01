@@ -180,13 +180,13 @@ local v2ray = {
         rules = {
             {
                 type = "field",
-                inboundTag = {"redirect_inbound", "socks_inbound"},
+                inboundTag = {"redirect_inbound"},
                 outboundTag = "direct",
                 ip = {"geoip:private"}
             },
             {
                 type = "field",
-                inboundTag = {"redirect_inbound", "socks_inbound"},
+                inboundTag = {"redirect_inbound"},
                 outboundTag = "direct",
                 ip = {"geoip:cn"}
             },

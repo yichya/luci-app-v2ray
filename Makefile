@@ -66,10 +66,10 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./files/root/etc/init.d/v2ray $(1)/etc/init.d/v2ray
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_BIN) ./files/root/etc/uci-defaults/luci-v2ray $(1)/etc/uci-defaults/luci-v2ray
-	$(INSTALL_DIR) $(1)/etc/v2ray
-	$(INSTALL_BIN) ./files/root/etc/v2ray/* $(1)/etc/v2ray/
-	$(INSTALL_DIR) $(1)/usr/share/dnsmasq_white_list
-	$(INSTALL_DATA) ./files/root/usr/share/dnsmasq_white_list/*.conf $(1)/usr/share/dnsmasq_white_list
+	$(INSTALL_DIR) $(1)/usr/share/v2ray
+	$(INSTALL_BIN) ./files/root/usr/share/v2ray/* $(1)/usr/share/v2ray/
+	$(INSTALL_DIR) $(1)/usr/share/dnsmasq-white-list
+	$(INSTALL_DATA) ./files/root/usr/share/dnsmasq-white-list/*.conf $(1)/usr/share/dnsmasq-white-list
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
