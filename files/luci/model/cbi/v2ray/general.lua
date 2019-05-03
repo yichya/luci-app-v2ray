@@ -83,11 +83,10 @@ if has_v2ray then
     o.default = 1080
     o.rmempty = false
 
-    -- todo
-    -- o = s:option(Value, "http_port", translate("Http Proxy Port"))
-    -- o.datatype = "port"
-    -- o.default = 1087
-    -- o.rmempty = false
+    o = s:option(Value, "http_port", translate("Http Proxy Port"))
+    o.datatype = "port"
+    o.default = 1087
+    o.rmempty = false
 
     o = s:option(Value, "socks_port", translate("Socks5 Proxy Port"))
     o.datatype = "port"

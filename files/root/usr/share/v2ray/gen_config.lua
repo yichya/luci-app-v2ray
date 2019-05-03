@@ -146,6 +146,17 @@ local function dns_conf()
     }
 end
 
+local function http_conf()
+    return {
+        port = proxy.http_port,
+        protocol = "http",
+        tag = "http_inbound",
+        settings = {
+            allowTransparent = false
+        }
+    }
+end
+
 local function socks_conf()
     return {
         port = proxy.socks_port,
@@ -157,18 +168,14 @@ local function socks_conf()
     }
 end
 
-local function inbounds()
-    t = {
+local v2ray = {
+    -- 传入连接
+    inbounds = {
+        http_conf(),
         dokodemo_conf(),
         socks_conf(),
         dns_conf()
-    }
-    return t
-end
-
-local v2ray = {
-    -- 传入连接
-    inbounds = inbounds(),
+    },
     -- 传出连接
     outbounds = {
         vmess_outbound(),
