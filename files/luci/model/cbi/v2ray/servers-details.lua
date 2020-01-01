@@ -160,4 +160,12 @@ o.rmempty = true
 o = s:option(Flag, "tls", translate("TLS"))
 o.rmempty = false
 
+o = s:option(Value, "tls_host", translate("TLS Host"))
+o:depends("tls", true)
+o.rmempty = true
+
+o = s:option(Flag, "tls_insecure", translate("Allow Insecure"))
+o:depends("tls", true)
+o.rmempty = false
+
 return m

@@ -46,6 +46,11 @@ local function vmess_outbound()
             sockopt = {
                 mark = tonumber(proxy.mark)
             },
+            tlsSettings = server.tls == "1" and 
+                {
+                    serverName = server.tls_host,
+                    allowInsecure = server.tls_insecure == "0" and false or true
+                } or nil,
             tcpSettings = server.transport == "tcp" and
                 {
                     header = {
