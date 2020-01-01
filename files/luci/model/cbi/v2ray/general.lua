@@ -63,7 +63,7 @@ o.rmempty = false
 
 --[[ 透明代理 ]] --
 if has_v2ray then
-    s = m:section(TypedSection, "transparent_proxy", translate("Transparent Proxy"))
+    s = m:section(TypedSection, "transparent_proxy", translate("Proxy Settings"))
     s.anonymous = true
 
     -- 主服务器
@@ -77,20 +77,19 @@ if has_v2ray then
     o.default = "nil"
     o.rmempty = false
 
-    -- 本地端口
-    o = s:option(Value, "local_port", translate("Redirect Port"))
+    o = s:option(Value, "tproxy_port", translate("Tproxy Port"))
     o.datatype = "port"
     o.default = 1080
     o.rmempty = false
 
     o = s:option(Value, "http_port", translate("Http Proxy Port"))
     o.datatype = "port"
-    o.default = 1087
+    o.default = 1081
     o.rmempty = false
 
     o = s:option(Value, "socks_port", translate("Socks5 Proxy Port"))
     o.datatype = "port"
-    o.default = 1086
+    o.default = 1082
     o.rmempty = false
 
     o = s:option(Value, "dns_port", translate("DNS Tunnel Port"))

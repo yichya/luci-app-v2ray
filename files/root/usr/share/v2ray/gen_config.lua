@@ -122,18 +122,18 @@ local function vmess_outbound()
     }
 end
 
-local function dokodemo_conf()
+local function tproxy_conf()
     return {
-        port = proxy.local_port,
+        port = proxy.tproxy_port,
         protocol = "dokodemo-door",
-        tag = "redirect_inbound",
+        tag = "tproxy_inbound",
         settings = {
             network = "tcp,udp",
             followRedirect = true
         },
         streamSettings = {
             sockopt = {
-                tproxy = "redirect"
+                tproxy = "tproxy"
             }
         }
     }
@@ -177,7 +177,7 @@ local v2ray = {
     -- 传入连接
     inbounds = {
         http_conf(),
-        dokodemo_conf(),
+        tproxy_conf(),
         socks_conf(),
         dns_conf()
     },
@@ -192,19 +192,19 @@ local v2ray = {
         rules = {
             {
                 type = "field",
-                inboundTag = {"redirect_inbound"},
-                outboundTag = "direct",
-                ip = {"geoip:private"}
-            },
-            {
-                type = "field",
-                inboundTag = {"redirect_inbound"},
+                inboundTag = {"tproxy_inbound"},
                 outboundTag = "direct",
                 ip = {"geoip:cn"}
             },
             {
                 type = "field",
-                inboundTag = {"redirect_inbound", "socks_inbound"},
+                inboundTag = {"tproxy_inbound", "socks_inbound"},
+                outboundTag = "direct",
+                ip = {"geoip:private"}
+            },
+            {
+                type = "field",
+                inboundTag = {"socks_inbound", "tproxy_inbound"},
                 outboundTag = "vmess"
             }
         }
