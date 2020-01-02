@@ -43,7 +43,6 @@ start_v2ray() {
     local main_server=$(uci_get_by_type transparent_proxy main_server)
     validate_server ${main_server} || return 1
     echo "server=/#/127.0.0.1#$(uci_get_by_type transparent_proxy dns_port)" > /tmp/dnsmasq.d/v2ray.conf
-    echo "conf-dir=/usr/share/dnsmasq-white-list" >> /tmp/dnsmasq.d/v2ray.conf
     procd_open_instance
     procd_set_param respawn
     procd_set_param command $v2ray_bin

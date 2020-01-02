@@ -1,3 +1,4 @@
+#!/usr/bin/lua
 local ucursor = require "luci.model.uci"
 local json = require "luci.jsonc"
 
@@ -46,7 +47,7 @@ local function vmess_outbound()
             sockopt = {
                 mark = tonumber(proxy.mark)
             },
-            tlsSettings = server.tls == "1" and 
+            tlsSettings = server.tls == "1" and
                 {
                     serverName = server.tls_host,
                     allowInsecure = server.tls_insecure == "0" and false or true
@@ -122,7 +123,7 @@ local function vmess_outbound()
     }
 end
 
-local function tproxy_conf()
+local function tproxy_inbound()
     return {
         port = proxy.tproxy_port,
         protocol = "dokodemo-door",
@@ -139,10 +140,11 @@ local function tproxy_conf()
     }
 end
 
-local function dns_conf()
+local function dns_server_inbound()
     return {
         port = proxy.dns_port,
         protocol = "dokodemo-door",
+        tag = "dns_server_inbound",
         settings = {
             address = "208.67.220.220",
             port = 443,
@@ -151,7 +153,7 @@ local function dns_conf()
     }
 end
 
-local function http_conf()
+local function http_inbound()
     return {
         port = proxy.http_port,
         protocol = "http",
@@ -162,7 +164,7 @@ local function http_conf()
     }
 end
 
-local function socks_conf()
+local function socks_inbound()
     return {
         port = proxy.socks_port,
         protocol = "socks",
@@ -173,39 +175,72 @@ local function socks_conf()
     }
 end
 
+local function dns_server_outbound()
+    return {
+    	protocol = "dns",
+        tag = "dns_server_outbound"
+    }
+end
+
+local function dns_conf()
+    return {
+    	servers = {
+	    {
+                address = "208.67.220.220",
+                port = 443,
+                domains = {"geosite:geolocation-!cn"}
+            },
+            {
+                address = "114.114.114.114",
+                port = 53,
+                domains = {"geosite:cn"}
+            },
+            "114.114.114.114"
+        },
+        tag = "dns_conf_inbound"
+    }
+end
+
 local v2ray = {
     -- 传入连接
     inbounds = {
-        http_conf(),
-        tproxy_conf(),
-        socks_conf(),
-        dns_conf()
+        http_inbound(),
+        tproxy_inbound(),
+        socks_inbound(),
+        dns_server_inbound()
     },
     -- 传出连接
     outbounds = {
         vmess_outbound(),
-        direct_outbound()
+        direct_outbound(),
+    	dns_server_outbound()
     },
+    dns = dns_conf(),
     -- 路由
     routing = {
         domainStrategy = "AsIs",
         rules = {
             {
                 type = "field",
-                inboundTag = {"tproxy_inbound"},
+                inboundTag = {"tproxy_inbound", "dns_conf_inbound"},
                 outboundTag = "direct",
                 ip = {"geoip:cn"}
             },
             {
                 type = "field",
-                inboundTag = {"tproxy_inbound", "socks_inbound"},
+                inboundTag = {"tproxy_inbound", "socks_inbound", "dns_conf_inbound"},
                 outboundTag = "direct",
                 ip = {"geoip:private"}
             },
             {
                 type = "field",
-                inboundTag = {"socks_inbound", "tproxy_inbound"},
+                inboundTag = {"socks_inbound", "tproxy_inbound", "dns_conf_inbound"},
                 outboundTag = "vmess"
+            },
+            {
+                type = "field",
+                inboundTag = {"dns_server_inbound"},
+                outboundTag = "dns_server_outbound"
             }
         }
     },

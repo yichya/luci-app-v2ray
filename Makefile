@@ -92,6 +92,8 @@ define Build/Prepare
 	$(foreach po,$(wildcard ${CURDIR}/files/luci/i18n/*.po), po2lmo $(po) $(PKG_BUILD_DIR)/$(patsubst %.po,%.lmo,$(notdir $(po)));)
 	[ ! -f $(PKG_BUILD_DIR)/v2ray-$(PKG_VERSION)-$(PKG_ARCH_V2RAY).zip ] && wget https://github.com/v2ray/v2ray-core/releases/download/$(PKG_VERSION)/v2ray-$(PKG_ARCH_V2RAY).zip -O $(PKG_BUILD_DIR)/v2ray-$(PKG_VERSION)-$(PKG_ARCH_V2RAY).zip
 	unzip -o $(PKG_BUILD_DIR)/v2ray-$(PKG_VERSION)-$(PKG_ARCH_V2RAY).zip -d $(PKG_BUILD_DIR)
+	wget https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat -O $(PKG_BUILD_DIR)/geoip.dat
+	wget https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat -O $(PKG_BUILD_DIR)/geosite.dat
 endef
 
 define Build/Configure
@@ -147,8 +149,6 @@ ifdef CONFIG_PACKAGE_V2RAY_INCLUDE_GEOSITE
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/geosite.dat $(1)/usr/share/v2ray/
 endif
 	$(INSTALL_BIN) ./files/root/usr/share/v2ray/* $(1)/usr/share/v2ray/
-	$(INSTALL_DIR) $(1)/usr/share/dnsmasq-white-list
-	$(INSTALL_DATA) ./files/root/usr/share/dnsmasq-white-list/*.conf $(1)/usr/share/dnsmasq-white-list
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
