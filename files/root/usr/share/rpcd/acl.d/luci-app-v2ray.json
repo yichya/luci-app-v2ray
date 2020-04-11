@@ -1,0 +1,11 @@
+{
+        "luci-app-v2ray": {
+                "description": "Grant access to V2ray configuration",
+                "read": {
+                        "uci": [ "v2ray" ]
+                },
+                "write": {
+                        "uci": [ "v2ray" ]
+                }
+        }
+}

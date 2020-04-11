@@ -16,7 +16,7 @@ define Package/$(PKG_NAME)
 	SECTION:=Custom
 	CATEGORY:=Extra packages
 	TITLE:=LuCI Support for v2ray-core
-	DEPENDS:=+iptables +ca-bundle
+	DEPENDS:=+iptables +ca-bundle +luci-compat
 endef
 
 define Package/$(PKG_NAME)/description
@@ -141,6 +141,8 @@ endif
 	$(INSTALL_BIN) ./files/root/etc/init.d/v2ray $(1)/etc/init.d/v2ray
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_BIN) ./files/root/etc/uci-defaults/luci-v2ray $(1)/etc/uci-defaults/luci-v2ray
+	$(INSTALL_DIR) $(1)/usr/share/rpcd/acl.d
+	$(INSTALL_DATA) ./files/root/usr/share/rpcd/acl.d/luci-app-v2ray.json $(1)/usr/share/rpcd/acl.d/luci-app-v2ray.json
 	$(INSTALL_DIR) $(1)/usr/share/v2ray
 ifdef CONFIG_PACKAGE_V2RAY_INCLUDE_GEOIP
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/geoip.dat $(1)/usr/share/v2ray/
@@ -148,7 +150,7 @@ endif
 ifdef CONFIG_PACKAGE_V2RAY_INCLUDE_GEOSITE
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/geosite.dat $(1)/usr/share/v2ray/
 endif
-	$(INSTALL_BIN) ./files/root/usr/share/v2ray/* $(1)/usr/share/v2ray/
+	$(INSTALL_BIN) ./files/root/usr/share/v2ray/gen_config.lua $(1)/usr/share/v2ray/gen_config.lua
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
