@@ -9,7 +9,7 @@ s.anonymous = true
 s.addremove = true
 s.sortable = true
 s.template = "cbi/tblsection"
-s.extedit = luci.dispatcher.build_url("admin/services/v2ray/servers/%s")
+s.extedit = luci.dispatcher.build_url("admin/vpn/v2ray/servers/%s")
 function s.create(...)
     local sid = TypedSection.create(...)
     if sid then

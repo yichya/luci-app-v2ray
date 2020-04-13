@@ -9,7 +9,7 @@ local securitys = {
 }
 
 m = Map(v2ray, "%s - %s" % { translate("V2ray"), translate("Edit Server") })
-m.redirect = luci.dispatcher.build_url("admin/services/v2ray/servers")
+m.redirect = luci.dispatcher.build_url("admin/vpn/v2ray/servers")
 m.sid = sid
 --m.template = "v2ray/servers-details"
 

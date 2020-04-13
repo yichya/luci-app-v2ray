@@ -5,18 +5,18 @@ function index()
         return
     end
 
-    entry({ "admin", "services", "v2ray" },
-        alias("admin", "services", "v2ray", "general"),
+    entry({ "admin", "vpn", "v2ray" },
+        alias("admin", "vpn", "v2ray", "general"),
         _("V2ray"), 10).dependent = true
 
-    entry({ "admin", "services", "v2ray", "general" },
+    entry({ "admin", "vpn", "v2ray", "general" },
         cbi("v2ray/general"),
         _("General Settings"), 10).leaf = true
 
-    entry({ "admin", "services", "v2ray", "status" },
+    entry({ "admin", "vpn", "v2ray", "status" },
         call("action_status")).leaf = true
 
-    entry({ "admin", "services", "v2ray", "servers" },
+    entry({ "admin", "vpn", "v2ray", "servers" },
         arcombine(cbi("v2ray/servers"), cbi("v2ray/servers-details")),
         _("Servers Manage"), 20).leaf = true
 end
