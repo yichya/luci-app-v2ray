@@ -1,5 +1,5 @@
 #!/usr/bin/lua
-local ucursor = require "luci.model.uci"
+local ucursor = require "luci.model.uci".cursor()
 local json = require "luci.jsonc"
 
 local proxy_section = ucursor:get_first("v2ray", "transparent_proxy")
