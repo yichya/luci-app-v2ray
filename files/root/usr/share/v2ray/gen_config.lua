@@ -34,7 +34,8 @@ local function vmess_outbound()
                         {
                             id = server.vmess_id,
                             alterId = tonumber(server.alter_id),
-                            security = server.security
+                            security = server.security,
+			    testsEnabled = server.tests_enabled
                         }
                     }
                 }

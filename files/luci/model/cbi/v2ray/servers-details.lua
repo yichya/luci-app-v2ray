@@ -53,6 +53,11 @@ o = s:option(ListValue, "security", translate("Encrypt Method"))
 for _, v in ipairs(securitys) do o:value(v, v:upper()) end
 o.rmempty = false
 
+o = s:option(ListValue, "tests_enabled", translate("Tests Enabled"))
+o:value("none", "none")
+o:value("VMessAEAD", "VMessAEAD")
+o.rmempty = false
+
 -- 传输协议
 o = s:option(ListValue, "transport", translate("Transport"))
 o:value("tcp", "TCP")
