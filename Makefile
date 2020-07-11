@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-v2ray
-PKG_VERSION:=v4.25.1
+PKG_VERSION:=v4.26.0
 PKG_RELEASE:=1
 
 PKG_LICENSE:=GPLv3
