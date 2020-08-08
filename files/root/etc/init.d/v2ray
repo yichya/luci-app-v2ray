@@ -48,6 +48,7 @@ start_v2ray() {
     procd_set_param command $v2ray_bin
     procd_append_param command -config
     procd_append_param command $(gen_config_file ${main_server})
+    procd_set_param limits nofile="5000 10000"
     procd_set_param env V2RAY_LOCATION_ASSET=/usr/share/v2ray
     procd_set_param stdout 1
     procd_set_param stderr 1
