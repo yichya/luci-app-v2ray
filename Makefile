@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-v2ray
 PKG_VERSION:=v4.32.1
-PKG_RELEASE:=1
+PKG_RELEASE:=6
 
 PKG_LICENSE:=GPLv3
 PKG_LICENSE_FILES:=LICENSE
@@ -48,6 +48,11 @@ config PACKAGE_V2RAY_INCLUDE_GEOIP
 
 config PACKAGE_V2RAY_INCLUDE_GEOSITE
 	bool "Include geosite.dat"
+	depends on PACKAGE_V2RAY_INCLUDE_V2RAY
+	default n
+
+config PACKAGE_V2RAY_INCLUDE_CLOUDFLARE_ORIGIN_ROOT_CA
+	bool "Include Cloudflare Origin Root CA"
 	depends on PACKAGE_V2RAY_INCLUDE_V2RAY
 	default n
 
@@ -135,6 +140,10 @@ endif
 	$(INSTALL_DATA) ./files/luci/model/cbi/v2ray/*.lua $(1)/usr/lib/lua/luci/model/cbi/v2ray/
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/view/v2ray
 	$(INSTALL_DATA) ./files/luci/view/v2ray/*.htm $(1)/usr/lib/lua/luci/view/v2ray/
+	$(INSTALL_DIR) $(1)/etc/ssl/certs
+ifdef CONFIG_PACKAGE_V2RAY_INCLUDE_CLOUDFLARE_ORIGIN_ROOT_CA
+	$(INSTALL_DATA) ./files/root/etc/ssl/certs/origin_ca_ecc_root.pem $(1)/etc/ssl/certs/origin_ca_ecc_root.pem
+endif
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_DATA) ./files/root/etc/config/v2ray $(1)/etc/config/v2ray
 	$(INSTALL_DIR) $(1)/etc/init.d
