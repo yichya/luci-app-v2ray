@@ -4,7 +4,6 @@ START=90
 STOP=15
 USE_PROCD=1
 NAME=v2ray
-EXTRA_COMMANDS=rules
 
 GENERATE_CONF="/usr/share/v2ray/gen_config.lua"
 

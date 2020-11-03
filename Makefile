@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-v2ray
-PKG_VERSION:=v4.32.0
+PKG_VERSION:=v4.32.1
 PKG_RELEASE:=1
 
 PKG_LICENSE:=GPLv3
@@ -43,12 +43,12 @@ config PACKAGE_V2RAY_INCLUDE_V2CTL
 
 config PACKAGE_V2RAY_INCLUDE_GEOIP
 	bool "Include geoip.dat"
-	depends on PACKAGE_V2RAY_INCLUDE_V2CTL
+	depends on PACKAGE_V2RAY_INCLUDE_V2RAY
 	default n
 
 config PACKAGE_V2RAY_INCLUDE_GEOSITE
 	bool "Include geosite.dat"
-	depends on PACKAGE_V2RAY_INCLUDE_V2CTL
+	depends on PACKAGE_V2RAY_INCLUDE_V2RAY
 	default n
 
 endmenu
