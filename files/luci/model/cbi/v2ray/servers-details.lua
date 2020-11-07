@@ -174,6 +174,7 @@ o = s:option(ListValue, "trojan_tls", translate("[trojan] Stream Security"))
 o:depends("protocol", "trojan")
 o:value("none", "None")
 o:value("tls", "TLS")
+o:value("xtls", "XTLS")
 o.rmempty = false
 
 o = s:option(Value, "trojan_tls_host", translate("[trojan][tls] Server Name"))
@@ -182,6 +183,14 @@ o.rmempty = true
 
 o = s:option(Flag, "trojan_tls_insecure", translate("[trojan][tls] Allow Insecure"))
 o:depends("trojan_tls", "tls")
+o.rmempty = false
+
+o = s:option(Value, "trojan_xtls_host", translate("[trojan][xtls] Server Name"))
+o:depends("trojan_tls", "xtls")
+o.rmempty = true
+
+o = s:option(Flag, "trojan_xtls_insecure", translate("[trojan][xtls] Allow Insecure"))
+o:depends("trojan_tls", "xtls")
 o.rmempty = false
 
 o = s:option(ListValue, "vmess_security", translate("[vmess] Encrypt Method"))

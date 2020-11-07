@@ -97,14 +97,22 @@ if has_v2ray then
     o.default = 5300
     o.rmempty = false
 
-    -- Todo
-    -- o = s:option(Flag, "dns_use_geosite", translate("Use V2ray GeoSite:CN instead of dnsmasq whitelist"))
-    -- o.rmempty = false    
-
     o = s:option(Value, "mark", translate("MARK"), translate("Avoid proxy loopback problems with local (gateway) traffic"))
     o.datatype = "uinteger"
     o.default = 255
     o.rmempty = false
+
+    s = m:section(TypedSection, "dns", translate("DNS Settings"))
+    s.anonymous = true
+
+    o = s:option(Value, "fast_dns", translate("DNS for geosite:cn"))
+    o.rmempty = false 
+
+    o = s:option(Value, "secure_dns", translate("DNS for geosite:geolocation-!cn"))
+    o.rmempty = false 
+
+    o = s:option(Value, "default_dns", translate("Default DNS"))
+    o.rmempty = false 
 end
 
 return m

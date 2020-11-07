@@ -8,6 +8,9 @@ local proxy = ucursor:get_all("v2ray", proxy_section)
 local server_section = proxy.main_server
 local server = ucursor:get_all("v2ray", server_section)
 
+local dns_section = ucursor:get_first("v2ray", "dns")
+local dns = ucursor:get_all("v2ray", dns_section)
+
 local function direct_outbound()
     return {
         protocol = "freedom",
@@ -141,38 +144,6 @@ local function stream_quic()
     end
 end
 
-local function trojan_outbound()
-    return {
-        protocol = "trojan",
-        tag = "outbound",
-        settings = {
-            servers = {
-                {
-                    address = server.server,
-                    port = tonumber(server.server_port),
-                    password = server.password,
-                }
-            }
-        },
-        streamSettings = {
-            network = server.transport,
-            sockopt = {
-                mark = tonumber(proxy.mark)
-            },
-            security = server.trojan_tls,
-            tlsSettings = server.trojan_tls == "tls" and {
-                serverName = server.trojan_tls_host,
-                allowInsecure = server.trojan_tls_insecure ~= "0"
-            } or nil,
-            quicSettings = stream_quic(),
-            tcpSettings = stream_tcp(),
-            kcpSettings = stream_kcp(),
-            wsSettings = stream_ws(),
-            httpSettings = stream_h2()
-        }
-    }
-end
-
 local function shadowsocks_outbound()
     return {
         protocol = "shadowsocks",
@@ -286,6 +257,42 @@ local function vless_outbound()
     }
 end
 
+local function trojan_outbound()
+    return {
+        protocol = "trojan",
+        tag = "outbound",
+        settings = {
+            servers = {
+                {
+                    address = server.server,
+                    port = tonumber(server.server_port),
+                    password = server.password,
+                }
+            }
+        },
+        streamSettings = {
+            network = server.transport,
+            sockopt = {
+                mark = tonumber(proxy.mark)
+            },
+            security = server.trojan_tls,
+            tlsSettings = server.trojan_tls == "tls" and {
+                serverName = server.trojan_tls_host,
+                allowInsecure = server.trojan_tls_insecure ~= "0"
+            } or nil,
+            xtlsSettings = server.trojan_tls == "xtls" and {
+                serverName = server.trojan_xtls_host,
+                allowInsecure = server.trojan_xtls_insecure ~= "0"
+            } or nil,
+            quicSettings = stream_quic(),
+            tcpSettings = stream_tcp(),
+            kcpSettings = stream_kcp(),
+            wsSettings = stream_ws(),
+            httpSettings = stream_h2()
+        }
+    }
+end
+
 local function server_outbound() 
     if server.protocol == "vmess" then
         return vmess_outbound()
@@ -365,16 +372,16 @@ local function dns_conf()
     return {
         servers = {
             {
-                address = "208.67.220.220",
-                port = 443,
+                address = dns.secure_dns,
+                port = 53,
                 domains = {"geosite:geolocation-!cn"}
             },
             {
-                address = "114.114.114.114",
+                address = dns.fast_dns,
                 port = 53,
                 domains = {"geosite:cn"}
             },
-            "114.114.114.114"
+            dns.default_dns
         },
         tag = "dns_conf_inbound"
     }

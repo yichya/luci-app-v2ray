@@ -1,22 +1,21 @@
-
 config general
-	option startup_delay '0'
-	option v2ray_bin '/usr/bin/v2ray'
+        option startup_delay '0'
+        option v2ray_bin '/usr/bin/v2ray'
 
 config transparent_proxy
-	option main_server 'nil'
-	option local_port '1080'
-	option bypass_china_addr '0'
-	option bypass_china_ip '0'
-	option mark '255'
+        option local_port '1080'
+        option mark '255'
+        option bypass_china_ip '1'
+        option socks_enable '1'
+        option dns_enable '1'
+        option bypass_china_addr '0'
+        option dns_port '5353'
+        option dns_use_geosite '0'
+        option tproxy_port '1080'
+        option http_port '1081'
+        option socks_port '1082'
 
-config servers
-	option alias 'sample'
-	option server '127.0.0.1'
-	option server_port '10000'
-	option alter_id '16'
-	option vmess_id '00000000-0000-0000-0000-000000000000'
-	option security 'auto'
-    option transport 'tcp'
-    option tcp_guise 'none'
-    option tls '0'
+config dns
+        option fast_dns '114.114.114.114'
+        option secure_dns '8.8.8.8'
+        option default_dns '8.8.8.8'
